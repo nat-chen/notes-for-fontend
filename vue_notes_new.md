@@ -487,7 +487,7 @@ inject: ['getMap']
 * 事件监听器
   * $on(eventName, eventHandler) 侦听一个事件
   * $emit(eventName, eventHandler) 触发一个事件
-  * $once(eventName, eventHandler) 一次性侦听一个事件
+  * $once(eventName, eventHandler) 一次性侦听一个事件，只触发一次，然后移除
   * $off(eventName, eventHandler) 停止侦听一个事件
 ```js
 mounted: function() {
