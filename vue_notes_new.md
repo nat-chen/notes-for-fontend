@@ -672,5 +672,4 @@ So they essentially do the same thing.
 <compo :value="bar" @input="val => bar = val"></comp>
 <comp v-model="bar"></comp>
 
-如果把<comp v-model="total">理解成<comp @input="total=arguments[0]" :value="total">就容易懂了。
 区别：1. 自定义事件的名称 2. sync 可以传多个 prop, v-model 只能一个
