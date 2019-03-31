@@ -9,7 +9,7 @@
   * view: 以声明方式将 state 映射到视图
   * actions: 响应 view 上的用户输入导致的状态变化
 
-* 单选数据流：actions => state => view => actions
+* 单向数据流：actions => state => view => actions
 
 * 解决的痛点：
   * 多个视图依赖于同一状态
@@ -115,7 +115,7 @@ mapGetters({
 * 更改 Vuex 的 store 中的状态唯一方法是提交 mutation
 * 每个 mutation 都有一个字符串的事件类型（type）和一个回调函数（handler）
 * 回调函数接受 state 作为第一个参数
-* 调用方式：sotre.commmit('increment')，函数接受额外参数，即 mutation 的载荷 payload；在大多数情况下，payload 为对象
+* 调用方式：store.commit('increment')，函数接受额外参数，即 mutation 的载荷 payload；在大多数情况下，payload 为对象
 
 ```js
 const store = new Vuex.Store({
