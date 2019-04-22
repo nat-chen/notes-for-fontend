@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>WebSockets - Simple chat</title>
+  <style>
+    .hidden {
+	    display: none;
+    }
+  </style>
+</head>
+<body>
+<form>
+	<div>
+		<textarea></textarea>
+		<span class="hidden">请输入选项</span>
+	</div>
+	<div>
+		<textarea></textarea>
+		<span class="hidden">请输入选项</span>
+	</div>
+	<div>
+		<textarea></textarea>
+		<span class="hidden">请输入选项</span>
+	</div>
+
+	<input type="checkbox">
+	<input type="checkbox">
+	<input type="checkbox">
+	<div class="select-tip hidden">请至少选择一项</div>
+
+	<button type="submit">提交</button>
+</form>
+
+<script>
+var lastIndex = -1;
+
+function findLastNonBlankTextarea() {
+	var textareaElements = document.querySelectorAll('textarea');
+	var textareaLength = textareaElements.length;
+	var lastIndex = -1;
+	for (var i = textareaLength - 1; i >= 0; i--) {
+		if (textareaElements[i].value !== '') {
+			lastIndex = i;
+			break;
+		}
+	}
+	return lastIndex;
+}
+
+function disableCheckboxes(lastIndex) {
+	var checkboxList = document.querySelectorAll('input');
+	var checkboxLength = checkboxList.length;
+	for (var i = 0; i < checkboxLength; i++) {
+		if (i <= lastIndex) {
+			checkboxList[i].removeAttribute('disabled', true);
+		} else {
+			checkboxList[i].setAttribute('disabled', true);
+		}
+	}
+}
+
+(function bindTextareaInputListener() {
+	document.addEventListener('input', function(event) {
+		var targetElement = event.target;
+		if (targetElement.tagName.toLowerCase() === 'textarea') {
+			lastIndex = findLastNonBlankTextarea();
+			disableCheckboxes(lastIndex);
+		}
+		if (targetElement.tagName.toLowerCase() === 'input') {
+			document.querySelector('.select-tip').classList.add('hidden');
+		}
+	}, false)
+})()
+
+function findBlankTextrea(lastIndex) {
+	var invalidFlag = false;
+	var textareaList = document.querySelectorAll('textarea');
+	[...textareaList].slice(0, lastIndex + 1).forEach(function(textarea) {
+		if (textarea.value === '') {
+			textarea.nextElementSibling.classList.remove('hidden');
+			if (invalidFlag === false) {
+				invalidFlag = true;
+			}
+		} else {
+			textarea.nextElementSibling.classList.add('hidden');
+		}
+	});
+	return invalidFlag;
+}
+
+(function submitForm() {
+	document.addEventListener('submit', function(event) {
+		event.preventDefault();
+		var blankFlag = findBlankTextrea(lastIndex);
+		var selectedFlag = atLeastOneCheckboxSelected(lastIndex);
+		if (selectedFlag === false) {
+			document.querySelector('.select-tip').classList.remove('hidden')
+		} else {
+			document.querySelector('.select-tip').classList.add('hidden')
+		}
+		if (invalidFlag === false) {
+			console.log('提交成功')
+		} else {
+			console.log('提交失败')
+		}
+	}, false);
+})()
+
+function atLeastOneCheckboxSelected() {
+	var inputList = document.querySelectorAll('input')
+	var isCheckboxSelected = false;
+	for (var i = 0; i <= lastIndex; i++) {
+		if (inputList[i].checked === true) {
+			isCheckboxSelected = true;
+			break;
+		}
+	}
+	return isCheckboxSelected;
+}
+
+</script>
+</body>
+</html>
